@@ -1,5 +1,8 @@
 /// <reference path="p5.global.d.ts" />
 
+const MIN_FONT_SIZE = 26;
+const MAX_FONT_SIZE = 300;
+
 let currentText = "Happy BDay Gabe!";
 let currentFontSize = 130;
 var fleeRadius = 50;
@@ -26,7 +29,7 @@ function setup() {
     textInput.parent(textP);
 
     let fontSizeP = createP("Font Size");
-    let fontSizeSlider = createSlider(128, 300, currentFontSize);
+    let fontSizeSlider = createSlider(MIN_FONT_SIZE, MAX_FONT_SIZE, currentFontSize);
     fontSizeSlider.input(textSizeSliderChanged);
     fontSizeSlider.parent(fontSizeP);
     
@@ -144,9 +147,13 @@ function advanceFleet() {
 
 function createVehicleFleet() {
 
+    let sampleFactor = map(currentFontSize, MIN_FONT_SIZE, MAX_FONT_SIZE, .2, 0.06);
+
     // A very cool funtion on the p5.Font library.
     // Returns an array of objects with alpha, x, and y
-    let points = font.textToPoints(currentText, 10, 200, currentFontSize);
+    let points = font.textToPoints(currentText, 10, 200, currentFontSize, {
+        sampleFactor: sampleFactor
+    });
 
     // Create any missing points
     if (vehicles.length < points.length) {
